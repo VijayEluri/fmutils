@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+  "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>
+  <bean id="OracleDBUtil"
+    class="com.fmaritato.dbutil.OracleDBUtil"
+    >
+  </bean>
+  <bean id="SQLServerDBUtil"
+    class="com.fmaritato.dbutil.SQLServerDBUtil"
+    >
+  </bean>
+  <bean id="SybaseDBUtil"
+    class="com.fmaritato.dbutil.SybaseDBUtil"
+    >
+  </bean>
+
+  <bean id="DBUtil" class="com.fmaritato.dbutil.OracleDBUtil" />
+</beans>

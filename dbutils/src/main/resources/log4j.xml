@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="CONSOLE" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.err"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern"
+                   value="%d{ISO8601} {%4.4t} %-5p [%c] %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.hibernate">
+        <level value="INFO"/>
+    </logger>
+
+    <!-- log just the SQL -->
+    <logger name="org.hibernate.SQL">
+        <level value="INFO"/>
+    </logger>
+
+    <!-- log JDBC bind parameters -->
+    <logger name="org.hibernate.type">
+        <level value="INFO"/>
+    </logger>
+
+    <!-- log schema export/update -->
+    <logger name="org.hibernate.tool.hbm2ddl">
+        <level value="INFO"/>
+    </logger>
+
+    <!-- c3p0 -->
+    <logger name="com.mchange">
+        <level value="INFO"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="ERROR"/>
+    </logger>
+
+    <logger name="com.fmaritato">
+        <level value="DEBUG"/>
+    </logger>
+
+    <root>
+        <level value="DEBUG"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+</log4j:configuration>
