@@ -325,13 +325,15 @@ public abstract class DBUtil {
 
     /**
      * Display the text of a stored procedure to stdout.
+     *
      * @param procName procedure name
      */
     public abstract void dumpStoredProcedure(String procName);
 
     /**
      * Display the text of a view
-     * @param viewName  view name
+     *
+     * @param viewName view name
      */
     public abstract void dumpView(String viewName);
 
@@ -339,9 +341,9 @@ public abstract class DBUtil {
      * Dump the ddl for a specific object.
      *
      * @param schema the schema to use
-     * @param obj  Object name
-     * @param type TABLE, VIEW, etc.
-     * @param dir directory to dump the ddl files
+     * @param obj    Object name
+     * @param type   TABLE, VIEW, etc.
+     * @param dir    directory to dump the ddl files
      * @throws Exception if something bad happens...
      */
     public abstract void dumpDDL(String schema, String obj, String type, String dir)
@@ -349,8 +351,9 @@ public abstract class DBUtil {
 
     /**
      * Dump DDL for *all* objects in the schema...
+     *
      * @param schema schema to dump ddl from
-     * @param dir directory to put files
+     * @param dir    directory to put files
      * @throws Exception if something bad happens
      */
     public abstract void dumpDDL(String schema, String dir)
@@ -368,6 +371,7 @@ public abstract class DBUtil {
         options.addOption("s", true, "Show the text of a stored procedure");
         options.addOption("v", true, "Show the text of a view");
         options.addOption("h", false, "Show this message");
+        options.addOption("t", true, "Table name");
 
         options.addOption(OptionBuilder.withLongOpt("formatter")
                 .withDescription("Use a different formatter")
@@ -431,6 +435,7 @@ public abstract class DBUtil {
                 u.setFetchSize(Integer.parseInt(line.getOptionValue("f")));
             }
 
+
             if (line.hasOption("h") || line.hasOption("help")) {
                 HelpFormatter formatter = new HelpFormatter();
                 formatter.printHelp("db", options);
@@ -473,6 +478,11 @@ public abstract class DBUtil {
             else {
                 // Set the default formatter otherwise
                 u.setFormatter(new TabularFormatter());
+            }
+
+            // Set the table name hack...
+            if (line.hasOption("t")) {
+                u.getFormatter().setTableName(line.getOptionValue("t"));
             }
 
             /**

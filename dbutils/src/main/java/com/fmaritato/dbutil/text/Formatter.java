@@ -12,4 +12,6 @@ public interface Formatter {
 
     public void format(ResultSetMetaData meta, Writer out) throws Exception;
 
+    // This is a hack becasue ResultSetMetaData.getTableName(int) doesn't work.
+    public void setTableName(String tableName);
 }
