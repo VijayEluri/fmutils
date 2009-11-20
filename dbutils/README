@@ -1,0 +1,47 @@
+Database command line query utils written in Java.
+
+Output can be format in a few different ways:
+  - comma separated
+  - tabular
+  - as a Hibernate object
+  - DBUnit <dataset> XML file
+
+The command line syntax is a little annoying so I usually end up creating shell aliases for
+connecting to different databases. Examples:
+
+DBUnit Dataset:
+java -Ddb.url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=hostname.address)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=service_name)))"
+-Ddb.driver=oracle.jdbc.driver.OracleDriver \
+-Ddb.username=db_username \
+-Ddb.password=db_password \
+-jar target/dbutils-1.0.0-jar-with-dependencies.jar \
+-q "select * from some_table where rownum<10"
+--formatter=com.fmaritato.dbutil.text.DatasetFormatter
+-t some_table
+
+NOTE that for DatasetFormatter you need to specify the -t option with the table name.
+This is because ResultSetMetaData.getTableName(int) always returns "". Sorry :(
+
+CSV:
+java -Ddb.url="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=hostname.address)(PORT=1521)))(CONNECT_DATA=(SERVICE_NAME=service_name)))"
+-Ddb.driver=oracle.jdbc.driver.OracleDriver \
+-Ddb.username=db_username \
+-Ddb.password=db_password \
+-jar target/dbutils-1.0.0-jar-with-dependencies.jar \
+-q "select * from some_table where rownum<10"
+--formatter=csv
+
+TAB delimited
+Just substitute --formatter=tab in the above statement.
+
+If --formatter is not provided, it will return results in tabular form; like this:
+-------------------------------------------------------------------------------------------------
+| OWNER                         | TABLE_NAME                    | TABLESPACE_NAME               |
+-------------------------------------------------------------------------------------------------
+| SYS                           | DUAL                          | SYSTEM                        |
+| SYS                           | A                             | SYSTEM                        |
+| SYS                           | B                             | SYSTEM                        |
+| SYS                           | C                             | SYSTEM                        |
+| SYS                           | D                             | SYSTEM                        |
+| SYS                           | E                             | null                          |
+-------------------------------------------------------------------------------------------------
