@@ -128,4 +128,7 @@ public class TabularFormatter implements Formatter {
         }
         out.write("\n");
     }
+    public void setTableName(String tableName) {
+        ; //do nothing
+    }
 }

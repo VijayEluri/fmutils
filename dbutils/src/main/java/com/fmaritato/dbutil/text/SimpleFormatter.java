@@ -89,4 +89,8 @@ public class SimpleFormatter implements Formatter {
         out.write(buf.toString());
         out.flush();
     }
+
+    public void setTableName(String tableName) {
+        ; //do nothing
+    }
 }

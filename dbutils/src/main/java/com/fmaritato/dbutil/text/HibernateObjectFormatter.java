@@ -147,4 +147,8 @@ public class HibernateObjectFormatter implements Formatter {
         tmp.append(s.toLowerCase().substring(last, s.length()));
         return tmp.toString();
     }
+    
+    public void setTableName(String tableName) {
+        ; //do nothing
+    }
 }
