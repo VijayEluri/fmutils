@@ -1,5 +1,11 @@
 Database command line query utils written in Java.
 
+== Building ==
+
+Please use maven 2.2.1 or higher.
+% mvn clean package
+
+== Running ==
 Output can be format in a few different ways:
   - comma separated
   - tabular
