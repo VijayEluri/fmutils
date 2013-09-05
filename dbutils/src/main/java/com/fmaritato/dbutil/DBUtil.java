@@ -18,6 +18,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.sql.Connection;
@@ -265,20 +266,25 @@ public abstract class DBUtil {
         }
 
         Connection c = null;
+        Writer out = null;
         try {
             c = getConnection();
             DatabaseMetaData meta = c.getMetaData();
-            ResultSet rs = meta.getColumns(null,
-                                           schema,
-                                           table.toUpperCase(),
-                                           null);
-            Writer out = new BufferedWriter(new OutputStreamWriter(System.out));
-            formatter.format(rs, out);
+            out = new BufferedWriter(new OutputStreamWriter(System.out));
+            formatter.format(meta, schema, table, out);
         }
         catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         finally {
+            if (out != null) {
+                try {
+                    out.close();
+                }
+                catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
             if (c != null) {
                 try {
                     c.close();
@@ -374,40 +380,40 @@ public abstract class DBUtil {
         options.addOption("t", true, "Table name");
 
         options.addOption(OptionBuilder.withLongOpt("formatter")
-                .withDescription("Use a different formatter")
-                .hasArg()
-                .withValueSeparator()
-                .create());
+                                       .withDescription("Use a different formatter")
+                                       .hasArg()
+                                       .withValueSeparator()
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("listStoredProcs")
-                .withDescription("List stored procedures")
-                .create());
+                                       .withDescription("List stored procedures")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("bind")
-                .hasArg()
-                .withValueSeparator()
-                .withDescription("comma separated bind key=val pairs")
-                .create());
+                                       .hasArg()
+                                       .withValueSeparator()
+                                       .withDescription("comma separated bind key=val pairs")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("input")
-                .hasArg()
-                .withValueSeparator()
-                .withDescription("file containing sql commands")
-                .create());
+                                       .hasArg()
+                                       .withValueSeparator()
+                                       .withDescription("file containing sql commands")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("sqlserver")
-                .withDescription("Force SQLServer implementation")
-                .create());
+                                       .withDescription("Force SQLServer implementation")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("sybase")
-                .withDescription("Force SQLServer implementation")
-                .create());
+                                       .withDescription("Force SQLServer implementation")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("oracle")
-                .withDescription("Force Oracle implementation")
-                .create());
+                                       .withDescription("Force Oracle implementation")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("ddl")
-                .hasArg()
-                .withValueSeparator()
-                .withDescription("dump the ddl for an object,type")
-                .create());
+                                       .hasArg()
+                                       .withValueSeparator()
+                                       .withDescription("dump the ddl for an object,type")
+                                       .create());
         options.addOption(OptionBuilder.withLongOpt("help")
-                .withDescription("Another option to show help msg")
-                .create());
+                                       .withDescription("Another option to show help msg")
+                                       .create());
 
         DBUtil u;
 

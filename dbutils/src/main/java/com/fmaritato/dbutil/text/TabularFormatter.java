@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.Reader;
 import java.io.Writer;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 
@@ -21,6 +22,11 @@ public class TabularFormatter implements Formatter {
     private static final int maxColumnPrecision = 1000;
 
     public TabularFormatter() {
+    }
+
+    @Override
+    public void format(DatabaseMetaData meta, String schema, String table, Writer out) throws Exception {
+        throw new RuntimeException("Not implemented");
     }
 
     public void format(ResultSet rs, Writer out) throws Exception {

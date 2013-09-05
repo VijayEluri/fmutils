@@ -10,6 +10,7 @@ import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.Types;
@@ -22,8 +23,29 @@ public class HibernateObjectFormatter implements Formatter {
     private String packageName = System.getProperty("package.name");
     private String tableName;
 
+    private String primaryKey;
+
+    public void format(DatabaseMetaData meta,
+                       String schema,
+                       String table,
+                       Writer out) throws Exception {
+
+
+        ResultSet rs = meta.getPrimaryKeys(null, schema, table);
+        // for now just look at first primary key
+        rs.next();
+        primaryKey = rs.getString("COLUMN_NAME");
+        rs.close();
+
+        rs = meta.getColumns(null,
+                             schema,
+                             table,
+                             null);
+        format(rs, out);
+    }
+
     public void format(ResultSetMetaData meta, Writer out) throws Exception {
-        //To change body of implemented methods use File | Settings | File Templates.
+        throw new RuntimeException("Not implemented");
     }
 
     public void format(ResultSet rs, Writer out) throws Exception {
@@ -64,6 +86,9 @@ public class HibernateObjectFormatter implements Formatter {
 
         for (String name : m.keySet()) {
             String cn = convertColumnName(name);
+            if (cn.equals(primaryKey)) {
+                buf.append("  @Id\n");
+            }
             buf.append("  @Column(name=\"").append(name).append("\")\n")
                .append("  public ")
                .append(m.get(name))

@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import java.io.Writer;
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.util.LinkedList;
@@ -22,6 +23,11 @@ public class DatasetFormatter implements Formatter {
 
     public void format(ResultSet rs, Writer out) throws Exception {
         format(rs, out, true);
+    }
+
+    @Override
+    public void format(DatabaseMetaData meta, String schema, String table, Writer out) throws Exception {
+        throw new RuntimeException("Not implemented");
     }
 
     public void format(ResultSetMetaData meta, Writer out) throws Exception {
@@ -62,9 +68,9 @@ public class DatasetFormatter implements Formatter {
                         value = v.toString();
                     }
                     value = value.replace("<", "&lt;")
-                            .replace(">", "&gt;")
-                            .replace("\"", "&quot;")
-                            .replace("\'", "&apos;");
+                                 .replace(">", "&gt;")
+                                 .replace("\"", "&quot;")
+                                 .replace("\'", "&apos;");
                     out.write(value);
                 }
                 out.write("\"");
